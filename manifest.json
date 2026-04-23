@@ -1,0 +1,29 @@
+{
+    "name": "最小限のPWA",
+    "short_name": "最小限PWA",
+    "description": "最小限のPWAのサンプル",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#eeffee",
+    "background_color": "#eeffee",
+    "icons": [
+        {
+            "purpose": "maskable",
+            "sizes": "48x48",
+            "src": "icons/maskable_icon_x48.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "maskable",
+            "sizes": "72x72 96x96",
+            "src": "icons/maskable_icon_x96.png",
+            "type": "image/png"
+        },
+        {
+            "purpose": "maskable",
+            "sizes": "128x128 192x192 256x256",
+            "src": "icons/maskable_icon_x192.png",
+            "type": "image/png"
+        }
+    ]
+}
