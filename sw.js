@@ -1,10 +1,13 @@
-// The version of the cache.
+// キャッシュのバージョン。
+// キャッシュの内容が変更されたときに更新する。
 const VERSION = "v1";
 
-// The name of the cache
+// キャッシュの名前。
+// バージョンを含めることで、古いキャッシュと区別できるようにする。
 const CACHE_NAME = `pwa-mini-${VERSION}`;
 
-// The static resources that the app needs to function.
+// アプリが機能するために必要な静的リソース。
+// これらのリソースは、インストールイベントでキャッシュに保存される。
 const APP_STATIC_RESOURCES = [
   "/",
   "/index.html",
@@ -15,7 +18,7 @@ const APP_STATIC_RESOURCES = [
   "/icons/maskable_icon_x192.png",
 ];
 
-// On install, cache the static resources
+// インストールイベントで、アプリの静的リソースをキャッシュに保存する
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
@@ -25,7 +28,7 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// delete old caches on activate
+// アクティベートイベントで、古いキャッシュを削除する
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
@@ -43,8 +46,8 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// On fetch, intercept server requests
-// and respond with cached responses instead of going to network
+// フェッチイベントで、サーバーへのリクエストをインターセプトし、
+// ネットワークに行く代わりにキャッシュされたレスポンスで応答する 
 self.addEventListener("fetch", (event) => {
   // As a single page app, direct app to always go to cached home page.
   if (event.request.mode === "navigate") {
@@ -52,16 +55,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // For all other requests, go to the cache first, and then the network.
+  // ネットワークに行く前にキャッシュを確認する。
+  // キャッシュにあればそれを返し、なければ404を返す。
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       const cachedResponse = await cache.match(event.request.url);
       if (cachedResponse) {
-        // Return the cached response if it's available.
+        // キャッシュされたレスポンスが存在する場合は、それを返す。
         return cachedResponse;
       }
-      // If resource isn't in the cache, return a 404.
+      // キャッシュにないリソースは404を返す。
       return new Response(null, { status: 404 });
     })(),
   );

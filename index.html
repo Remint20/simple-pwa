@@ -27,6 +27,7 @@
     </form>
     <section id="past-periods"></section>
     <script>
+      // サービスワーカーの登録
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js").then(
           (registration) => {
